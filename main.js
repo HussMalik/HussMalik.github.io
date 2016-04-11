@@ -1,1 +1,1 @@
-alert("Hello!");
+document.location.assign("gitmusicapp");
