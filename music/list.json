@@ -90,5 +90,29 @@
     "Tangerine Dream -  Love On A Real Train" :{
         "title" : "Love On A Real Train",
         "artist" : "Tangerine Dream"
+    },
+    "Ministry - Game Over" :{
+        "title" : "Game Over",
+        "artist" : "Ministry"
+    },
+    "Ministry - Let's Be Happy" :{
+        "title" : "Let's Be Happy",
+        "artist" : "Ministry"
+    },
+    "Double Fantasy -  Food For Fantasy" :{
+        "title" : "Food For Fantasy",
+        "artist" : "Double Fantasy"
+    },
+    "Double Fantasy -  Endless Running" :{
+        "title" : "Endless Running",
+        "artist" : "Double Fantasy"
+    },
+    "Genesis - Unquiet Slumbers for the Sleepers" :{
+        "title" : "Unquiet Slumbers for the Sleepers",
+        "artist" : "Genesis"
+    },
+    "Genesis - In That Quiet Earth" :{
+        "title" : "In That Quiet Earth",
+        "artist" : "Genesis"
     }
 }
