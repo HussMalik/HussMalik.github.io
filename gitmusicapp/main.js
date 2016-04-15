@@ -1,4 +1,12 @@
 /**
+
+    Author: Abbas Abdulmalik
+    Creation Date: April 7, 2016
+    Title:  Git Y'r Music
+    Revised: April 12, 2016
+    Purpose: A music playlist sharing app
+    Notes: play friends' music without downloading the file
+
 <div id="mobileHolder">
     <div id="content">
         <div>
@@ -46,6 +54,7 @@ var appTitle = id("appTitle");
 var colorSlider = id("colorSlider");
 var shadowSlider = id("shadowSlider");
 var gitColor = id("gitColor");
+var fileInput = id("fileInput");
 
 var propNames = Object.keys;
 var playlistHeader = "Choose a Song";
@@ -61,6 +70,11 @@ var menuOpen = false;
 var prefix = ["-webkit-","-moz-","-ms-","-o-",""];
 var mainColorAngle = 186;
 var backgroundColorAngle = 6;
+var shuffleBox = id("shuffleBox");
+var shuffleState = id("shuffleState");
+var shuffleIcon = id("shuffleIcon");
+var shuffleOn = false;
+var shuffleTimerId = null;
 
 //====| The Driver's Seat |====
 
@@ -70,12 +84,22 @@ friendButton.onclick = getNewList;
 menuButton.onclick = toggleAndFlash;
 X.onclick = toggleAndFlash;
 appTitle.onclick = toggleAndFlash;
+
+//---| menu actions |------
+
 gitName.onkeyup = getNewList;
 gitName.onclick =clearInput;
-chooser.onchange = changePlayList;
+fileInput.onchange = uploadSong;
 colorSlider.oninput = showColors;
 colorSlider.onmousedown = showColors;
 gitColor.onmouseup = hideColors;
+
+//---| END menu actions |------
+
+chooser.onchange = changePlayList;
+shuffleBox.onclick = toggleShuffle;
+
+//------| testing out stuff |--------
 shadowSlider.onblur = function(e){
     shadowSlider.style.visibility = "hidden";
 };
@@ -87,6 +111,43 @@ menu.onclick = function(e){
 };
 
 //====| Under The Hood |====
+
+function uploadSong(){
+    try{
+        var file = this.files[0];
+        var noMp3 = file.name.substring(0, file.name.length - 4);
+        var artist = noMp3.split("-")[0].trim();
+        var title = noMp3.split("-")[1].trim();
+        /**
+         * 0.) Limit file to .mp3 files.
+         * 1.) Pop a dialog and get title and artist.
+         * 2.) Validate file, artist and title (no blank fields)
+         * 3.) Ajax post to getMusicFile.php setting requestHeaders
+         *
+        */
+        //---| ajax post |---
+        var fileSender = new XMLHttpRequest();
+        fileSender.open("POST","phpfiles/getMusicFile.php");
+        fileSender.setRequestHeader("title", title);
+        fileSender.setRequestHeader("artist", artist);
+        fileSender.setRequestHeader("filename", file.name);
+        fileSender.send(file);
+
+        //---| post's response |---
+        fileSender.onreadystatechange = function(){
+            if(fileSender.readyState === 4){
+                alert("Status: "+
+                    fileSender.status +
+                    "\n" +
+                    fileSender.responseText
+                );
+            }
+        };
+    }
+    catch(error){
+        alert("Problems uploading a song.\n" + error);
+    }
+}
 
 function initialize() {
     // 1. Augment our lists object with downloaded lists
@@ -102,6 +163,34 @@ function initialize() {
 
 } //===| END of initialize() |=====
 
+function toggleShuffle(){
+    if(shuffleOn){
+        shuffleBox.style.boxShadow = "1px 1px 1px black";
+        shuffleState.innerHTML = "off";
+        shuffleState.style.textShadow = "0 1px 0 hsl(165,50%,70%)";
+        shuffleIcon.style.textShadow = "0 1px 0 hsl(165,50%,70%)";
+        shuffleState.style.color = "black";
+        shuffleIcon.style.color = "black";
+        clearInterval(shuffleTimerId);
+        shuffleIcon.style.transform = "rotateZ(90deg)";
+        shuffleOn = false;
+    }
+    else{
+        shuffleBox.style.boxShadow = "inset 1px 1px 1px black";
+        shuffleState.innerHTML = "on";
+        shuffleState.style.color = "lightgray";
+        shuffleIcon.style.color = "lightgray";
+        shuffleState.style.textShadow = "0 1px 0 black";
+        shuffleIcon.style.textShadow = "0 1px 0 black";
+        shuffleOn = true;
+        toggleShuffle.angle = -10;
+        shuffleTimerId = setInterval(function(){
+            toggleShuffle.angle += 10;
+            shuffleIcon.style.transform = "rotateZ("+toggleShuffle.angle+"deg)";
+        },100);
+    }
+}
+toggleShuffle.angle = 0;
 function loadColorsFromBrowser(){
     if(window.localStorage){
         var possibleAngle = window.localStorage.getItem("mainColorAngle");
@@ -146,10 +235,8 @@ function showColors(e){
 }
 
 function hideColors(){
-    menu.style.transition = "all 1s ease;";    
+    menu.style.transition = "all 1s ease;";
     shadowSlider.style.visibility = "hidden";
-    menu.style.visibility = "visible";
-    menuOpen = true;    
 }
 
 function setMainColor(){
@@ -159,7 +246,7 @@ function setMainColor(){
         "linear-gradient(-60deg, hsl(" +
             mainColorAngle +
             ", 50%, 40%), white)"
-        ;        
+        ;
     });
     if(window.localStorage){
         window.localStorage.setItem("mainColorAngle",mainColorAngle);
@@ -168,15 +255,23 @@ function setMainColor(){
 }
 function setBackgroundColor(){
     backgroundColorAngle = (mainColorAngle - 180);
-    document.body.style.background = "-webkit-linear-gradient(60deg, white, hsl(" +
-        backgroundColorAngle +
-        ", 50%, 50%)) no-repeat"
-    ;
-    document.body.style.backgroundSize = "cover";
-    appTitle.style.background = "-webkit-linear-gradient(60deg, white, hsl("+
-       backgroundColorAngle +
-        ", 50%, 50%)) no-repeat"
-    ;
+
+    prefix.forEach(function(m){
+        document.body.style.background = m +
+            "linear-gradient(60deg, white, hsl(" +
+            backgroundColorAngle +
+            ", 50%, 50%)) no-repeat"
+        ;
+        document.body.style.backgroundSize = "cover";
+        appTitle.style.background = m +
+            "linear-gradient(60deg, white, hsl("+
+            backgroundColorAngle +
+            ", 50%, 50%)) no-repeat"
+        ;
+    });
+
+
+
     if(window.localStorage){
         window.localStorage.setItem("backgroundColorAngle",backgroundColorAngle);
     }
@@ -244,16 +339,16 @@ function configureResizing() {
         shadowSlider.style.left = sliderStats.left + "px";
         shadowSlider.style.top = sliderStats.top  + "px";
         shadowSlider.value = colorSlider.value;
-        
+
     }
     //-------------------
     function resizeAndCenter() {
         resizeRootEm();
         centerPlayer();
-        alignSliders();        
+        alignSliders();
     }
     //-------------
-    
+
 }
 //----------
 function addPlaylistNamesToBox() {
@@ -445,7 +540,7 @@ function toggleMenu(){
         menuOpen = false;
     }
     else{
-        menu.style.transition = "all 1s ease";        
+        menu.style.transition = "all 1s ease";
         menu.style.visibility = "visible";
         menu.style.opacity = 1;
         menuOpen = true;

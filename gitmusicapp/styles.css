@@ -1,3 +1,11 @@
+/*
+    Author: Abbas Abdulmalik
+    Creation Date: April 7, 2016
+    Title:  Git Y'r Music
+    Revised: April 12, 2016
+    Purpose: A music playlist sharing app
+    Notes: play friends' music without downloading the file
+*/
 html{
     margin:0;
     padding:0;
@@ -70,7 +78,7 @@ body{
 
 .gitMenu{
     width: 95%;
-    text-align: center;
+    text-align: left;
     margin: 0.25rem auto;
     padding: 1%;
     border-radius: 8px;
@@ -78,8 +86,8 @@ body{
 }
 
 #X{
-    float: right;
-    padding-right: 2%;
+    float: left;
+    padding-left: 2%;
     font-size: 2rem;
     font-style: normal;    
     cursor: pointer;
@@ -137,3 +145,29 @@ table{
 #shadowSlider{
     visibility: hidden;
 }
+/*===========| audio controls |===========*/
+
+#audioControls{
+    font-size: 0.7rem;
+    margin: 0.25rem auto;
+}
+#shuffleBox{
+    margin: 0 auto;
+    box-shadow: 1px 1px 1px black;
+    border-radius: 0.2rem;
+    width: 5.5rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+#shuffleIcon{
+    font-size: 1rem;    
+    display: inline-block;
+    transform-origin: 50% 55%;
+    transform: rotateZ(90deg);
+    width: 20%;    
+}
+#shuffleState{
+   
+}
+/*===========| END audio controls |===========*/
