@@ -196,7 +196,7 @@ function turnShuffleOn(){
     toggleShuffle.angle = -10;
     shuffleTimerId = setInterval(function(){
         toggleShuffle.angle += 10;
-        shuffleIcon.style.transform = "rotateZ("+toggleShuffle.angle+"deg)";
+        shuffleIcon.style.transform = "rotateZ("+ toggleShuffle.angle % 360 + "deg)";
     },100);    
 }
 function turnShuffleOff(){
