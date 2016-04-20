@@ -109,24 +109,36 @@ body{
 #gitname{
     width: 25%;
 }
+#menuCouple{
+  height: .2rem;
+}
+
 #menuButton{
     color: black;
     text-shadow: 0 1px 0 hsl(165,50%,70%);
     float: left;
     padding-left: 2%;
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-style: normal;    
     cursor: pointer;
+    vertical-align: middle;
 }
+
+#menuWord{
+    display: inline-block;
+    font-size: 0.8rem;
+    font-style: italic;
+    font-weight: normal;
+    vertical-align: middle;
+    margin-bottom:0.25rem;
+}
+
 #audioPlayer{
-    width:92%;
+    width:90%;
     border-radius: 0.2rem;
 }
 
-#playlist{
-    text-align: center;
-    width: 60%;
-}
+
 #currentlyPlaying{
     padding-top: 0.5rem;
     font-size: 1.2rem;
@@ -146,18 +158,30 @@ table{
     visibility: hidden;
 }
 /*===========| audio controls |===========*/
-
+#controlsTable{
+    width: 18rem;
+}
+#playlist{
+    text-align: center;
+    vertical-align: middle;
+    width: 11rem;
+    box-shadow: 1px 1px 1px black;
+    border-radius: 0.2rem; 
+    text-align: left;
+}
 #audioControls{
     font-size: 0.7rem;
     margin: 0.25rem auto;
 }
 #shuffleBox{
+    display: inline-block;    
     margin: 0 auto;
     box-shadow: 1px 1px 1px black;
     border-radius: 0.2rem;
-    width: 5.5rem;
+    width: 6rem;
     cursor: pointer;
     transition: all 0.25s ease;
+    vertical-align: middle;    
 }
 
 #shuffleIcon{
@@ -167,7 +191,18 @@ table{
     transform: rotateZ(90deg);
     width: 20%;    
 }
-#shuffleState{
-   
+
+#nextSong{
+    display: inline-block;
+    width: 0.8rem;
+    border-radius: 0.2rem;    
+    font-size: 1.29rem;
+    vertical-align: top;
+    box-shadow: 1px 1px 1px black;
+    margin: 0 auto;
+    padding-left: 0.5rem;
+    padding-right: 0.1rem;
+    line-height: 1.18rem;
+    cursor: pointer;
 }
 /*===========| END audio controls |===========*/
