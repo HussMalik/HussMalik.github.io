@@ -67,10 +67,6 @@
         "title": "Liberty",
         "artist": "Patrick O'Hearn"
     },
-    "Patrick O'Hearn - Two Continents": {
-        "title": "Two Continents",
-        "artist": "Patrick O'Hearn"
-    },
     "Pete Bardens - Prelude": {
         "title": "Prelude",
         "artist": "Pete Bardens"
@@ -122,5 +118,13 @@
     "Tangerine Dream - The Dream Is Always The Same (Extended)" :{
         "title" : "The Dream Is Always The Same (Extended)",
         "artist" : "Tangerine Dream"
+    },
+    "Patrick O'Hearn - Milan To Alessio Top Down" :{
+        "title" : "Milan To Alessio Top Down",
+        "artist" : "Patrick O'Hearn"
+    },
+    "Patrick O'Hearn  -  Two Continents" :{
+        "title" : "Two Continents",
+        "artist" : "Patrick O'Hearn"
     }
 }
