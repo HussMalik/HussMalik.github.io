@@ -3,7 +3,7 @@
     Author: Abbas Abdulmalik
     Creation Date: April 2, 2016
     Title:  Git Y'r Music
-    Revised: April 19, 2016
+    Revised: April 20, 2016
     Purpose: A music playlist sharing app
     Notes: play friends' music without downloading their files
 */
@@ -15,6 +15,8 @@ function id(string) {
     return document.getElementById(string);
 }
 /*global CreateListMixer*/
+var cycleTime = 0.5; // half a second?
+var shuffleImages = ["images/shuffle3.png","images/shuffle1.png","images/shuffle2.png","images/shuffle4.png",];
 var getRandomSong = CreateListMixer();
 var nextSong = id("nextSong");
 var content = id("content");
@@ -64,14 +66,12 @@ menuButton.onclick = toggleAndFlash;
 X.onclick = toggleAndFlash;
 appTitle.onclick = toggleAndFlash;
 shuffleBox.onclick = toggleShuffle;
+nextSong.onclick = playNextSong;
 audioPlayer.onended = function(){
     if(shuffleOn){
         playNextSong();
     }
 };
-
-nextSong.onclick = playNextSong;
-
 //---| menu actions |------
 
 gitName.onkeyup = getNewList;
@@ -124,7 +124,7 @@ function playNextSong(e){
     if(chooser.selectedIndex !== 0){
         if(shuffleOn){
             playlist.selectedIndex = songsArray.indexOf(getRandomSong()) + 1;
-            playSong();            
+            playSong();
         }
         else if(playlist.selectedIndex !== highestIndex){
             playlist.selectedIndex += 1;
@@ -132,10 +132,10 @@ function playNextSong(e){
         }
         else{
             playlist.selectedIndex = 1;
-            playSong();        
+            playSong();
         }
         flashObjectStyle(nextSong,"box-shadow","inset 1px 1px 1px black", 0.5);
-        flashObjectColor(nextSong,"white", 0.5);        
+        flashObjectColor(nextSong,"white", 0.5);
     }
 }
 //----------
@@ -192,10 +192,10 @@ function initialize() {
 //----------
 function toggleShuffle(){
     if(shuffleOn){
-        turnShuffleOff();
+        turnShuffle2Off();
     }
     else{
-        turnShuffleOn();
+        turnShuffle2On();
     }
 }
 toggleShuffle.angle = 0;
@@ -228,6 +228,69 @@ function turnShuffleOff(){
     clearInterval(shuffleTimerId);
     shuffleIcon.style.transform = "rotateZ(90deg)";
     shuffleOn = false;
+}
+//----------
+function turnShuffle2On(){
+    if(chooser.selectedIndex === 0){return;}
+    playlist.selectedIndex = songsArray.indexOf(getRandomSong(songsArray)) + 1;
+    playSong();
+    shuffleBox.style.boxShadow = "inset 1px 1px 1px black";
+    shuffleState.innerHTML = "on";
+    shuffleState.style.color = "lightgray";
+    shuffleIcon.style.color = "lightgray";
+    shuffleState.style.textShadow = "0 1px 0 black";
+    shuffleIcon.style.textShadow = "0 1px 0 black";
+    shuffleOn = true;
+    fadeShuffleImage();
+}
+//----------
+function turnShuffle2Off(){
+    shuffleBox.style.boxShadow = "1px 1px 1px black";
+    shuffleState.innerHTML = "off";
+    shuffleState.style.textShadow = "0 1px 0 hsl(165,50%,70%)";
+    shuffleIcon.style.textShadow = "0 1px 0 hsl(165,50%,70%)";
+    shuffleState.style.color = "black";
+    shuffleIcon.style.color = "black";
+    clearInterval(shuffleTimerId);
+    shuffleIcon.style.transform = "rotateZ(0deg)";
+
+	shuffleIcon.style.opacity = "1";
+	shuffleIcon.style.background = "url(images/shuffle.png) no-repeat center";
+	shuffleIcon.style.backgroundSize = "contain";
+
+    shuffleOn = false;
+}
+//----------
+function fadeShuffleImage(){
+	var minOpacity = 0.3;
+	var opacity = minOpacity;
+	var brighter = 1, darker = -1;
+	var direction = brighter;
+	var steps = 10;
+	if(shuffleOn){
+		shuffleTimerId = setInterval(function(){
+			opacity += (1/steps)* direction;
+			if(opacity >= 1){
+				direction = darker;
+
+			}
+			if (opacity <= minOpacity){
+				direction = brighter;
+				//rotate images
+				shuffleImages.push(shuffleImages.shift());
+				shuffleIcon.style.background = "url("+ shuffleImages[0] +") no-repeat center";
+				shuffleIcon.style.backgroundSize = "contain";
+
+			}
+			shuffleIcon.style.opacity = opacity +"";
+		}, cycleTime*1000/steps);
+	}
+	else{
+		clearInterval(shuffleTimerId);
+		shuffleIcon.style.opacity = "1";
+		shuffleIcon.style.background = "url(images/shuffle.png) no-repeat center";
+		shuffleIcon.style.backgroundSize = "contain";
+	}
 }
 //----------
 function loadColorsFromBrowser(){
@@ -460,7 +523,8 @@ function addNameToBox(newGitName) {
 }
 //----------
 function changePlayList(e) {
-    turnShuffleOff();
+    //turnShuffleOff();
+    turnShuffle2Off();
     if (chooser.selectedIndex === 0) {
         playlist.innerHTML = "";
         var topOption = document.createElement("option");
@@ -593,3 +657,45 @@ function toggleMenu(){
         menuOpen = true;
     }
 }
+//-------
+function substringSubarray(string, array){
+/**
+ * A function that is given a string and an array.
+ * It returns a (possibly) smaller array of elements
+ * that match the string.
+ * It returns nothing if both the string and array
+ * are not provided.
+*/	
+	//Needs both arguments, else returns nothing
+	if(array === undefined){
+		return [];
+	}
+	//first argument needs to be string
+	else if(typeof string !== 'string'){
+		return [];
+	}
+	//second argument needs to be an array
+	else if(type(array) !== '[object Array]'){
+		return [];
+	}
+	
+	return matchedArray();
+	
+	//---| helper function |---
+	function type(thing){
+		return {}.toString.call(thing);	
+	}
+	function matchedArray(){
+		var newArray = [];
+		//fill this array with the items that match the string
+		array.forEach(function(m){
+			//push m to the newArray,
+			//if it contains the substring
+			//ignoring case
+			if(m.toLowerCase().indexOf(string.toLowerCase()) !== -1){
+				newArray.push(m);
+			}
+		});
+		return newArray;
+	}
+}//===| END of substringSubarray() |===
