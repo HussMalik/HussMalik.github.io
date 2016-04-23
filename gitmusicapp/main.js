@@ -35,6 +35,7 @@ var shadowSlider = id("shadowSlider");
 var gitColor = id("gitColor");
 var fileInput = id("fileInput");
 var removeList = id("removeList");
+var searchBox = id("searchBox");
 
 var propNames = Object.keys;
 var playlistHeader = "Choose a Song";
@@ -42,6 +43,7 @@ var ajax = new XMLHttpRequest();
 var lists = {};
 var namesArray = [];
 var songsArray = [];
+var songsArrayBackup = [];
 var currentUrl = "";
 var currentPlayListName = "";
 var busyFlashingColor = false;
@@ -59,6 +61,7 @@ var shuffleTimerId = null;
 //====| The Driver's Seat |====
 
 window.onload = initialize;
+searchBox.onkeyup = findMatches;
 chooser.onchange = changePlayList;
 playlist.onchange = playSong;
 friendButton.onclick = getNewList;
@@ -72,6 +75,8 @@ audioPlayer.onended = function(){
         playNextSong();
     }
 };
+
+
 //---| menu actions |------
 
 gitName.onkeyup = getNewList;
@@ -97,6 +102,68 @@ menu.onclick = function(e){
 
 //====| Under The Hood |====
 
+function initialize() {
+    // 1. Augment our lists object with downloaded lists
+    addListsFromServer();
+    // 2. Fill our chooser with lists' names
+    //addPlaylistNamesToBox();//called from within 1. above
+    // 3. Further augment our lists object with browser's copy
+    addListsFromBrowser();
+    // 4. Store lists object on the browser
+    //storeListsToBrowser();
+    configureResizing();
+    loadColorsFromBrowser();
+
+} //===| END of initialize() |=====
+function findMatches(e){
+    //if the search box is empty, restore old playlist
+    if(e.target.value === ""){
+            //restore playlist and anything else that needs restoring. Then ...
+            songsArray = songsArrayBackup;
+            changePlayList();
+            return;
+    }
+    //-------------------
+   // var keyCode = e.keyCode;
+    //if(keyCode && keyCode === 13){
+        //var matchedSongsWithIndex = [];
+        var matchedSongsArray = subList(searchBox.value,songsArrayBackup);
+        
+        /*
+        matchedSongsArray.forEach(function(m,i,a){
+            matchedSongsWithIndex.push(m+"~~~ "+ songsArray.indexOf(m));
+        });
+        alert(matchedSongsWithIndex.join('```\n').split('```'));
+        /
+        
+         * Test here to see if we can restore a broken playlist
+        */
+        
+        if(matchedSongsArray.length !== 0 && searchBox.value !== ""){
+            songsArray = matchedSongsArray;
+            playlist.innerHTML = "";
+            var list = chooser.options[chooser.selectedIndex].innerHTML;            
+            var header = document.createElement("option");
+            header.innerHTML = playlistHeader;
+            playlist.appendChild(header);
+            songsArray.forEach(function (m) {
+                var artistTitle = lists[list][m].artist + " - " + lists[list][m].title;
+                var option = document.createElement("option");
+                option.innerHTML = artistTitle;
+                playlist.appendChild(option);
+            });
+            playlist.selectedIndex = 1;
+            playSong();
+            audioPlayer.pause();
+        }
+        else{
+            songsArray = songsArrayBackup;            
+            changePlayList();
+        }
+        /**   end of test */
+    //}
+}
+//----------
 function removePlaylist(e){
     var listToRemove = removeList.options[removeList.selectedIndex].innerHTML;
     var arrayOfplaylists = [].slice.call(chooser.options,0);
@@ -176,20 +243,6 @@ function uploadSong(){
     }
 }
 //----------
-function initialize() {
-    // 1. Augment our lists object with downloaded lists
-    addListsFromServer();
-    // 2. Fill our chooser with lists' names
-    //addPlaylistNamesToBox();//called from within 1. above
-    // 3. Further augment our lists object with browser's copy
-    addListsFromBrowser();
-    // 4. Store lists object on the browser
-    //storeListsToBrowser();
-    configureResizing();
-    loadColorsFromBrowser();
-
-} //===| END of initialize() |=====
-//----------
 function toggleShuffle(){
     if(shuffleOn){
         turnShuffle2Off();
@@ -232,8 +285,13 @@ function turnShuffleOff(){
 //----------
 function turnShuffle2On(){
     if(chooser.selectedIndex === 0){return;}
-    playlist.selectedIndex = songsArray.indexOf(getRandomSong(songsArray)) + 1;
-    playSong();
+    
+    var songOnDeck = getRandomSong(songsArray);
+    //if a song is not already playing, play song:
+    if(audioPlayer.paused){
+        playlist.selectedIndex = songsArray.indexOf(songOnDeck) + 1;        
+        playSong();        
+    }
     shuffleBox.style.boxShadow = "inset 1px 1px 1px black";
     shuffleState.innerHTML = "on";
     shuffleState.style.color = "lightgray";
@@ -525,6 +583,7 @@ function addNameToBox(newGitName) {
 function changePlayList(e) {
     //turnShuffleOff();
     turnShuffle2Off();
+    //searchBox.value="";
     if (chooser.selectedIndex === 0) {
         playlist.innerHTML = "";
         var topOption = document.createElement("option");
@@ -537,6 +596,7 @@ function changePlayList(e) {
     currentPlayListName = list;
     currentUrl = "https://" + list + ".github.io" + "/music/";
     songsArray = propNames(lists[list]);
+    songsArrayBackup = songsArray;
 
     playlist.innerHTML = "";
     var header = document.createElement("option");
@@ -657,6 +717,68 @@ function toggleMenu(){
         menuOpen = true;
     }
 }
+//-------
+function subList(string, list){
+/**
+ * A function that is given a string and an array.
+ * It returns a (possibly) smaller array of elements
+ * that match the string.
+ * It returns nothing if both the string and array
+ * are not provided.
+*/		
+	var returnList = null;
+	
+	//test the arguments
+	if(list === undefined){
+		return;
+	}
+	else if(typeof string !== "string"){
+		return;
+	}
+	else if(typeof list !== "object"){
+		return;
+	}
+	//done testing arguments
+	
+	if(type(list) === "Array"){
+		buildSubArray();
+	}
+	else{
+		buildSubObject();
+	}
+	return returnList;
+	
+	//---helper functions---
+	function buildSubArray(){
+		returnList = [];
+		if(string.length !== 0){
+			list.forEach(function(m){
+				if(m.toLowerCase().indexOf(string.toLowerCase()) !== -1){
+					returnList.push(m);
+				}
+			});			
+		}		
+	}
+	//----
+	function buildSubObject(){
+		returnList={};
+		if(string.length !== 0){
+			for(var prop in list){
+				if(prop.toLowerCase().indexOf(string.toLowerCase()) !== -1){
+					returnList[prop] = list[prop];
+				}
+			}			
+		}		
+	}
+	//----	
+	function type(arg){
+		var prefix = '[object ';
+		var trueType = {}.toString.call(arg);
+		trueType = trueType.slice(prefix.length, trueType.length-1);
+		return trueType;
+	}
+	//---end of helpers--
+}//=====| END of subList() |==========
 //-------
 function substringSubarray(string, array){
 /**
