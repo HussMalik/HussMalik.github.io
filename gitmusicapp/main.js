@@ -1,12 +1,10 @@
 /**
-
     Author: Abbas Abdulmalik
     Creation Date: April 2, 2016
     Title:  Git Y'r Music
-    Revised: April 20, 2016
+    Revised: April 22, 2016
     Purpose: A music playlist sharing app
     Notes: play friends' music without downloading their files
-    (push password = Hfhq6LLq1a)
 */
 "use strict";
 
@@ -37,6 +35,7 @@ var gitColor = id("gitColor");
 var fileInput = id("fileInput");
 var removeList = id("removeList");
 var searchBox = id("searchBox");
+var listRefresher = id("refreshList");
 
 var propNames = Object.keys;
 var playlistHeader = "Choose a Song";
@@ -71,13 +70,12 @@ X.onclick = toggleAndFlash;
 appTitle.onclick = toggleAndFlash;
 shuffleBox.onclick = toggleShuffle;
 nextSong.onclick = playNextSong;
+listRefresher.onclick = refreshList;
 audioPlayer.onended = function(){
     if(shuffleOn){
         playNextSong();
     }
 };
-
-
 //---| menu actions |------
 
 gitName.onkeyup = getNewList;
@@ -103,6 +101,7 @@ menu.onclick = function(e){
 
 //====| Under The Hood |====
 
+
 function initialize() {
     // 1. Augment our lists object with downloaded lists
     addListsFromServer();
@@ -116,66 +115,78 @@ function initialize() {
     loadColorsFromBrowser();
 
 } //===| END of initialize() |=====
+function refreshList(e){
+    if(chooser.selectedIndex !== 0){
+        flashObjectStyle(listRefresher,"box-shadow","inset 1px 1px 1px black", 0.5);
+        flashObjectColor(listRefresher,"white", 0.5);
+        //-----------
+
+        var currentOption = chooser.options[chooser.selectedIndex];
+        var listname = currentOption.innerHTML;
+        var E = {};
+        
+        E.target = chooser;        
+        removePlaylist(E);
+        E.target = removeList;
+        removePlaylist(E);  
+        
+        gitName.value = listname;
+        E.keyCode = 13;        
+        getNewList(E);
+        
+        toggleMenu();
+        setTimeout(function(){
+            chooser.selectedIndex = chooser.options.length-1;
+        },500);
+    }
+} 
+
 function findMatches(e){
     var keyCode = e.keyCode;
     //if the search box is empty, restore old playlist
     if(e.target.value === ""){
-            //restore playlist and anything else that needs restoring. Then ...
+            //restore playlist and anything else that needs restoring:
             songsArray = songsArrayBackup;
             changePlayList();
             return;
     }
-    //-------------------
-   // var keyCode = e.keyCode;
-    //if(keyCode && keyCode === 13){
-        //var matchedSongsWithIndex = [];
-        var matchedSongsArray = subList(searchBox.value,songsArrayBackup);
-        
-        /*
-        matchedSongsArray.forEach(function(m,i,a){
-            matchedSongsWithIndex.push(m+"~~~ "+ songsArray.indexOf(m));
+    var matchedSongsArray = subList(searchBox.value,songsArrayBackup);
+    if(matchedSongsArray.length !== 0 && searchBox.value !== ""){
+        songsArray = matchedSongsArray;
+        playlist.innerHTML = "";
+        var list = chooser.options[chooser.selectedIndex].innerHTML;            
+        var header = document.createElement("option");
+        header.innerHTML = playlistHeader;
+        playlist.appendChild(header);
+        songsArray.forEach(function (m) {
+            var artistTitle = lists[list][m].artist + " - " + lists[list][m].title;
+            var option = document.createElement("option");
+            option.innerHTML = artistTitle;
+            playlist.appendChild(option);
         });
-        alert(matchedSongsWithIndex.join('```\n').split('```'));
-        /
-        
-         * Test here to see if we can restore a broken playlist
-        */
-        
-        if(matchedSongsArray.length !== 0 && searchBox.value !== ""){
-            songsArray = matchedSongsArray;
-            playlist.innerHTML = "";
-            var list = chooser.options[chooser.selectedIndex].innerHTML;            
-            var header = document.createElement("option");
-            header.innerHTML = playlistHeader;
-            playlist.appendChild(header);
-            songsArray.forEach(function (m) {
-                var artistTitle = lists[list][m].artist + " - " + lists[list][m].title;
-                var option = document.createElement("option");
-                option.innerHTML = artistTitle;
-                playlist.appendChild(option);
-            });
-            playlist.selectedIndex = 1;
-            playSong();
-            audioPlayer.pause();
-            if(keyCode === 13){
-                audioPlayer.play();
-            }
+        playlist.selectedIndex = 1;
+        playSong();
+        audioPlayer.pause();
+        if(keyCode === 13){
+            audioPlayer.play();
         }
-        else{
-            songsArray = songsArrayBackup;            
-            changePlayList();
-        }
-        /**   end of test */
-    //}
+    }
+    else{
+        songsArray = songsArrayBackup;            
+        changePlayList();
+    }
 }
 //----------
-function removePlaylist(e){
-    var listToRemove = removeList.options[removeList.selectedIndex].innerHTML;
+function removePlaylist(e,x){
+    var source = e.target;
+    var listToRemove = source.options[source.selectedIndex].innerHTML;
+   // var listToRemove = removeList.options[removeList.selectedIndex].innerHTML;
     var arrayOfplaylists = [].slice.call(chooser.options,0);
     arrayOfplaylists.forEach(function(m,i,a){
         if(m.innerHTML === listToRemove){
             chooser.removeChild(chooser[i]);
             //remove old list from menu
+            
             removeList.removeChild(removeList[i]);
             removeList.selectedIndex = 0;
 
@@ -208,6 +219,20 @@ function playNextSong(e){
         }
         flashObjectStyle(nextSong,"box-shadow","inset 1px 1px 1px black", 0.5);
         flashObjectColor(nextSong,"white", 0.5);
+    }
+}
+//----------
+function playSong() {
+    var i = playlist.selectedIndex;
+    if (i > 0) {
+        currentlyPlaying.innerHTML = playlist[i].innerHTML + " (" + currentPlayListName + ")";
+        flashObjectStyle(currentlyPlaying,"text-shadow","0 2px 0 black", 0.25);
+        flashObjectColor(currentlyPlaying,"lightgray", 0.25);        
+    }
+    i -= 1;
+    if (i >= 0) {
+        var url = currentUrl + songsArray[i] + ".mp3";
+        audioPlayer.src = url;
     }
 }
 //----------
@@ -410,7 +435,7 @@ function setMainColor(){
         content.style.background = pre +
             "linear-gradient(-60deg, hsl(" +
             mainColorAngle +
-            ", 50%, 40%), white)"
+            ", 50%, 50%), white)"
         ;
     });
     if(window.localStorage){
@@ -454,7 +479,7 @@ function addListsFromBrowser(){
 }
 //------
 function addToRemoveList(listName){
-    var option =document.createElement("option");
+    var option = document.createElement("option");
     option.innerHTML = listName;
     id("removeList").appendChild(option);
 }
@@ -533,7 +558,8 @@ function getNewList(e) {
     if (e.keyCode && e.keyCode !== enterKey) {
         return;
     }
-
+    // add to remove list
+    addToRemoveList(gitName.value);
     //point to url
     var url = "https://" + gitName.value + ".github.io/music/list.json";
     ajax.open("GET", url);
@@ -617,18 +643,7 @@ function changePlayList(e) {
     flashObjectStyle(playlist, "textShadow", "1px 1px 1px black", 0.4);
 }
 //----------
-function playSong() {
-    var i = playlist.selectedIndex;
-    if (i > 0) {
-        currentlyPlaying.innerHTML = playlist[i].innerHTML + " (" + currentPlayListName + ")";
-    }
-    i -= 1;
-    if (i >= 0) {
-        var url = currentUrl + songsArray[i] + ".mp3";
-        audioPlayer.src = url;
-    }
-}
-//----------
+
 function sendListToServer(listObject) {
     var listString = JSON.stringify(listObject);
     var listSender = new XMLHttpRequest();
