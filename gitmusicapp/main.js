@@ -6,6 +6,7 @@
     Revised: April 20, 2016
     Purpose: A music playlist sharing app
     Notes: play friends' music without downloading their files
+    (push password = Hfhq6LLq1a)
 */
 "use strict";
 
