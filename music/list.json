@@ -150,5 +150,25 @@
     "The Jesus And Mary Chain - Something Wrong" :{
         "title" : "Something Wrong",
         "artist" : "The Jesus And Mary Chain"
+    },
+    "Ministry - What Is The Reason (Live Minneapolis 1983)" :{
+        "title" : "What Is The Reason (Live Minneapolis 1983)",
+        "artist" : "Ministry"
+    },
+    "A Flock Of Seagulls - Magic" :{
+        "title" : "Magic",
+        "artist" : "A Flock Of Seagulls"
+    },
+    "Area - Sympathy" :{
+        "title" : "Sympathy",
+        "artist" : "Area"
+    },
+    "Patrick O'Hearn - Desire" :{
+        "title" : "Desire",
+        "artist" : "Patrick O'Hearn"
+    },
+    "This Mortal Coil - The Last Ray" :{
+        "title" : "The Last Ray",
+        "artist" : "This Mortal Coil"
     }
 }
