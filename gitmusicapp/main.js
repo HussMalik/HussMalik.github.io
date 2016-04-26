@@ -5,7 +5,6 @@
     Revised: April 22, 2016
     Purpose: A music playlist sharing app
     Notes: play friends' music without downloading their files
-    (Hfhq6LLq1a)
 */
 "use strict";
 
@@ -147,6 +146,7 @@ function findMatches(e){
     //if the search box is empty, restore old playlist
     if(e.target.value === ""){
             //restore playlist and anything else that needs restoring:
+            playlist.size = 0;  
             songsArray = songsArrayBackup;
             changePlayList();
             return;
@@ -165,14 +165,23 @@ function findMatches(e){
             option.innerHTML = artistTitle;
             playlist.appendChild(option);
         });
-        playlist.selectedIndex = 1;
-        playSong();
-        audioPlayer.pause();
+        playlist.selectedIndex = 0;//choose first matched song
+
+        //show list
+        if(songsArray.length >= 7){
+            playlist.size = 7;
+        }
+        else{
+            playlist.size = songsArray.length + 2;            
+        }
+
         if(keyCode === 13){
-            audioPlayer.play();
+            playlist.size = 0;
+            playSong();
         }
     }
     else{
+        playlist.size = 0;        
         songsArray = songsArrayBackup;            
         changePlayList();
     }
@@ -224,6 +233,7 @@ function playNextSong(e){
 }
 //----------
 function playSong() {
+    playlist.size = 0;
     var i = playlist.selectedIndex;
     if (i > 0) {
         currentlyPlaying.innerHTML = playlist[i].innerHTML + " (" + currentPlayListName + ")";
