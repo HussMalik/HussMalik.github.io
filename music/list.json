@@ -225,5 +225,10 @@
         "title" : "Hollows",
         "artist" : "Lanterna",
         "picture": "lanterna-backyard.png"
+    },
+    "Food For Fantasy - Spirit Of Freedom" :{
+        "title" : "Spirit Of Freedom",
+        "artist" : "Food For Fantasy",
+        "picture": "fantasy-freedom.png"
     }
 }
