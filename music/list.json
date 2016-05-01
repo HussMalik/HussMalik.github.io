@@ -230,5 +230,10 @@
         "title" : "Spirit Of Freedom",
         "artist" : "Food For Fantasy",
         "picture": "fantasy-freedom.png"
+    },
+    "Dancing Fantasy - Voodoo Jammin" :{
+        "title" : "Voodoo Jammin",
+        "artist" : "Dancing Fantasy",
+        "picture" : "dancefanta-moonlight.png"
     }
 }
