@@ -245,5 +245,10 @@
         "title" : "Shop Territory",
         "artist" : "Tangerine Dream",
         "picture": "tangerine-shopterritory.png"
+    },
+    "Vangelis - Theme from Antarctica" :{
+        "title" : "Theme from Antarctica",
+        "artist" : "Vangelis",
+        "picture": "vangelis-antarctica.png"
     }
 }
