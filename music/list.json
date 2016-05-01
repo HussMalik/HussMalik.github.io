@@ -214,5 +214,10 @@
     "Hiroki Okano - 1.7" :{
         "title" : "1.7",
         "artist" : "Hiroki Okano"
+    },
+    "Yanni - Looking Glass" :{
+        "title" : "Looking Glass",
+        "artist" : "Yanni",
+        "picture": "yanni-keys.png"
     }
 }
