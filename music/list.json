@@ -240,5 +240,10 @@
         "title" : "Mistral",
         "artist" : "Ashra",
         "picture": "ashra-mistral.png"
+    },
+    "Tangerine Dream - Shop Territory" :{
+        "title" : "Shop Territory",
+        "artist" : "Tangerine Dream",
+        "picture": "tangerine-shopterritory.png"
     }
 }
