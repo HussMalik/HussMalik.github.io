@@ -255,5 +255,10 @@
         "title" : "Cloudy Sky",
         "artist" : "TeeKay",
         "picture": "teekay-cloudysky.png"
+    },
+    "Simple Minds - New Gold Dream" :{
+        "title" : "New Gold Dream",
+        "artist" : "Simple Minds",
+        "picture": "simpleminds-newgolddream.png"
     }
 }
