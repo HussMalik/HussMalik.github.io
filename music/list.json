@@ -250,5 +250,10 @@
         "title" : "Theme from Antarctica",
         "artist" : "Vangelis",
         "picture": "vangelis-antarctica.png"
+    },
+    "TeeKay - Cloudy Sky" :{
+        "title" : "Cloudy Sky",
+        "artist" : "TeeKay",
+        "picture": "teekay-cloudysky.png"
     }
 }
