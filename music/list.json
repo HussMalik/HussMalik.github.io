@@ -235,5 +235,10 @@
         "title" : "Voodoo Jammin",
         "artist" : "Dancing Fantasy",
         "picture" : "dancefanta-moonlight.png"
+    },
+    "Ashra - Mistral" :{
+        "title" : "Mistral",
+        "artist" : "Ashra",
+        "picture": "ashra-mistral.png"
     }
 }
