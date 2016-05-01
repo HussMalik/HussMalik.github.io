@@ -260,5 +260,20 @@
         "title" : "New Gold Dream",
         "artist" : "Simple Minds",
         "picture": "simpleminds-newgolddream.png"
+    },
+    "Simple Minds - Big Sleep" :{
+        "title" : "Big Sleep",
+        "artist" : "Simple Minds",
+        "picture": "simpleminds-newgolddream.png"
+    },
+    "Nightingale - Light Dance" :{
+        "title" : "Light Dance",
+        "artist" : "Nightingale",
+        "picture": "nightingale-lightdance.png"
+    },
+    "Patrick O'Hearn - Life Along the River Vaal" :{
+        "title" : "Life Along the River Vaal",
+        "artist" : "Patrick O'Hearn",
+        "picture": "ohearn-ancientdreams.png"
     }
 }
