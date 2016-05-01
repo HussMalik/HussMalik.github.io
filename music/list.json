@@ -275,5 +275,10 @@
         "title" : "Life Along the River Vaal",
         "artist" : "Patrick O'Hearn",
         "picture": "ohearn-ancientdreams.png"
+    },
+    "Dancing Fantasy - California Grooves, Yo!" :{
+        "title" : "California Grooves, Yo!",
+        "artist" : "Dancing Fantasy",
+        "picture" : "dancefanta-moonlight.png"
     }
 }
