@@ -224,6 +224,6 @@
     "Lanterna - Hollows" :{
         "title" : "Hollows",
         "artist" : "Lanterna",
-        "pictures": "lanterna-backyard.png"
+        "picture": "lanterna-backyard.png"
     }
 }
