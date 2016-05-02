@@ -133,7 +133,8 @@
     },
     "Tangerine Dream - Running Out of Time" :{
         "title" : "Running Out of Time",
-        "artist" : "Tangerine Dream"
+        "artist" : "Tangerine Dream",
+        "picture": "tangerinedream-runningoutoftime.png"
     },
     "Tangerine Dream - Go to the Head of the Class" :{
         "title" : "Go to the Head of the Class",
