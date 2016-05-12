@@ -89,7 +89,7 @@ var altpix = [
     "palmisland.gif",
     "rockwaterpassage.gif",
     "snowwaterfall.gif",
-    "snowtree.gif",
+    "snowtree3.gif",
     "stream2.gif",
     "paris.gif",
     "trafficnight.gif"
@@ -127,7 +127,7 @@ audioPlayer.onended = function(){
 };
 
 id("pictureDiv").addEventListener("click", function(e){
-    e.stopPropagation();
+    if(!extrasOn)e.stopPropagation();
     if(toggleOn){
         contractPicture(e);
         toggleOn = false;
@@ -1026,7 +1026,7 @@ function substringSubarray(string, array){
 }//===| END of substringSubarray() |===
 //-------
 function expandPicture(e){
-    scroller.modify();
+    if(extrasOn)scroller.modify();
     var me = e.target;
     me.style.position = "fixed";
     me.style.right="0";
@@ -1039,7 +1039,7 @@ function expandPicture(e){
 }
 //--------------
 function contractPicture(e){
-    scroller.modify();
+    if(extrasOn)scroller.modify();
     var me = e.target;
     me.style.width = "7rem";
     me.style.height = "7rem";
