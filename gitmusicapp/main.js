@@ -443,12 +443,15 @@ function turnExtrasOn(){
     extrasDiv.style.boxShadow = "inset 1px 1px 1px black";
     var i = playlist.selectedIndex;
     if (i > 0) {
-        currentlyPlaying.innerHTML = playlist[i].innerHTML + " (" + currentPlayListName + ")";
+        currentlyPlaying.innerHTML = playlist[i].innerHTML +
+            " (" +
+            currentPlayListName +
+            ")"
+        ;
         flashObjectStyle(currentlyPlaying,"text-shadow","0 2px 0 black", 0.25);
         flashObjectColor(currentlyPlaying,"lightgray", 0.25);
     }
     i -= 1;      
-    var songNameString = playlist[i].innerHTML.trim();
     var list = chooser.options[chooser.selectedIndex].innerHTML;
     var currentList = lists[list];
     var picture = currentList[songsArray[i]].picture;
@@ -459,7 +462,8 @@ function turnExtrasOn(){
             "/music/altpix/"+ getRandomImage() +
             ") no-repeat center";
             pictureDiv.style.backgroundSize = "contain";
-            addScroller(songNameString);
+            var songName = playlist[playlist.selectedIndex].innerHTML.trim();
+            addScroller(songName);
         }
     },1);
 }
