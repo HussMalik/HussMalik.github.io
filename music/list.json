@@ -317,5 +317,10 @@
         "title" : "Hold On",
         "artist" : "Yes",
         "picture": "yes-90125.png"
+    },
+    "Frankie Knuckles - Whistle Song" :{
+        "title" : "Whistle Song",
+        "artist" : "Frankie Knuckles",
+        "picture": "knuckles-march.png"
     }
 }
