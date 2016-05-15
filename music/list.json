@@ -286,7 +286,7 @@
     "John Serrie - Flightpath" :{
         "title" : "Flightpath",
         "artist" : "John Serrie",
-        "picture": "John Serrie - Flightpath.mp3"
+        "picture": "serie-flightpath.png"
     },
     "Yes - Siberian Khatru" :{
         "title" : "Siberian Khatru",
@@ -297,5 +297,10 @@
         "title" : "Wondrous Stories",
         "artist" : "Yes",
         "picture": "yes-songs.png"
+    },
+    "Yes - Future Times_Rejoice" :{
+        "title" : "Future Times / Rejoice",
+        "artist" : "Yes",
+        "picture": "yes-tormato.png"
     }
 }
