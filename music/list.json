@@ -282,5 +282,10 @@
         "title" : "California Grooves, Yo!",
         "artist" : "Dancing Fantasy",
         "picture" : "dancefanta-moonlight.png"
+    },
+    "John Serrie - Flightpath" :{
+        "title" : "Flightpath",
+        "artist" : "John Serrie",
+        "picture": "John Serrie - Flightpath.mp3"
     }
 }
