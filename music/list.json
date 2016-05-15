@@ -302,5 +302,20 @@
         "title" : "Future Times / Rejoice",
         "artist" : "Yes",
         "picture": "yes-tormato.png"
+    },
+    "Yes - Run Throught The Light" :{
+        "title" : "Run Throught The Light",
+        "artist" : "Yes",
+        "picture": "yes-drama.png"
+    },
+    "Yes - Does It Really Happen" :{
+        "title" : "Does It Really Happen",
+        "artist" : "Yes",
+        "picture": "yes-drama.png"
+    },
+    "Yes - Hold On" :{
+        "title" : "Hold On",
+        "artist" : "Yes",
+        "picture": "yes-90125.png"
     }
 }
