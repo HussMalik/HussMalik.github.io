@@ -287,5 +287,15 @@
         "title" : "Flightpath",
         "artist" : "John Serrie",
         "picture": "John Serrie - Flightpath.mp3"
+    },
+    "Yes - Siberian Khatru" :{
+        "title" : "Siberian Khatru",
+        "artist" : "Yes",
+        "picture": "yes-edge.png"
+    },
+    "Yes - Wondrous Stories" :{
+        "title" : "Wondrous Stories",
+        "artist" : "Yes",
+        "picture": "yes-songs.png"
     }
 }
