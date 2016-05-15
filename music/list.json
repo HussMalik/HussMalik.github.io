@@ -322,5 +322,10 @@
         "title" : "Whistle Song",
         "artist" : "Frankie Knuckles",
         "picture": "knuckles-march.png"
+    },
+    "Yes - It Can Happen" :{
+        "title" : "It Can Happen",
+        "artist" : "Yes",
+        "picture": "yes-90125.png"
     }
 }
