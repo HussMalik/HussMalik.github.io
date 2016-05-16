@@ -327,5 +327,10 @@
         "title" : "It Can Happen",
         "artist" : "Yes",
         "picture": "yes-90125.png"
+    },
+    "Kraftwerk - Computer Love" :{
+        "title" : "Computer Love",
+        "artist" : "Kraftwerk",
+        "picture": "kraftwerk-computer.png"
     }
 }
