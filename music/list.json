@@ -337,5 +337,10 @@
         "title" : "Computer World 2",
         "artist" : "Kraftwerk",
         "picture": "kraftwerk-computer.png"
+    },
+    "Kraftwerk - Computer World" :{
+        "title" : "Computer World",
+        "artist" : "Kraftwerk",
+        "picture": "kraftwerk-computer.png"
     }
 }
