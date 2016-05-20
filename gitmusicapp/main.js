@@ -89,7 +89,7 @@ var altpix = [
     "palmisland.gif",
     "rockwaterpassage.gif",
     "snowwaterfall.gif",
-    "snowtree3.gif",
+    "snowtree.gif",
     "stream2.gif",
     "paris.gif",
     "trafficnight.gif"
