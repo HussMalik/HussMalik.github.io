@@ -347,5 +347,10 @@
         "title" : "You've Got To Pay The Price",
         "artist" : "Al Kent",
         "picture": "alkent-payprice.png"
+    },
+    "Anugama - Silk Tree" :{
+        "title" : "Silk Tree",
+        "artist" : "Anugama",
+        "picture": "nightingale-lightdance.png"
     }
 }
