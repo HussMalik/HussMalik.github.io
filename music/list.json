@@ -367,5 +367,10 @@
         "title" : "African Dance",
         "artist" : "Soul II Soul",
         "picture": "s2s.png"
+    },
+    "Soul II Soul - Back To Life" :{
+        "title" : "Back To Life",
+        "artist" : "Soul II Soul",
+        "picture": "s2sb2l.png"
     }
 }
