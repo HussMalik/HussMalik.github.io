@@ -362,5 +362,10 @@
         "title" : "Happiness",
         "artist" : "Soul II Soul",
         "picture": "s2s.png"
+    },
+    "Soul II Soul - African Dance" :{
+        "title" : "African Dance",
+        "artist" : "Soul II Soul",
+        "picture": "s2s.png"
     }
 }
