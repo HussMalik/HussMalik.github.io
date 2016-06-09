@@ -357,5 +357,10 @@
         "title" : "Sky Safari",
         "artist" : "Jonn Serrie",
         "picture": "serrieskysafari.png"
+    },
+    "Soul II Soul - Happiness" :{
+        "title" : "Happiness",
+        "artist" : "Soul II Soul",
+        "picture": "s2s.png"
     }
 }
