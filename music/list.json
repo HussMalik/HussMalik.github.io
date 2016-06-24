@@ -377,5 +377,10 @@
         "title" : "Inventions for Electric Guitar (Full Album) 1975",
         "artist" : "Manuel Gottsching",
         "picture": "gottschinginventions.png"
+    },
+    "Ministry - With Sympathy (Full Album)" :{
+        "title" : "With Sympathy (Full Album)",
+        "artist" : "Ministry",
+        "picture": "ministrywithsympathy.png"
     }
 }
