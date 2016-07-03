@@ -411,5 +411,10 @@
         "title" : "Waiting All Night",
         "artist" : "Phish",
         "picture" : "phishwaiting.jpg"
+    },
+    "Go West - Call Me" :{
+        "title" : "Call Me",
+        "artist" : "Go West",
+        "picture" : "gowestcallme.png"
     }
 }
