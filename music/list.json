@@ -416,5 +416,10 @@
         "title" : "Call Me",
         "artist" : "Go West",
         "picture" : "gowestcallme.png"
+    },
+    "Lush - Sweetness and Light" :{
+        "title" : "Sweetness and Light",
+        "artist" : "Lush",
+        "picture" : "lushsweetness.jpg"
     }
 }
