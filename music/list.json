@@ -376,11 +376,16 @@
     "Manuel Gottsching - Inventions for Electric Guitar (Full Album) 1975" :{
         "title" : "Inventions for Electric Guitar (Full Album) 1975",
         "artist" : "Manuel Gottsching",
-        "picture": "gottschinginventions.png"
+        "picture": "gottschinginventions.png    "
     },
     "Ministry - With Sympathy (Full Album)" :{
         "title" : "With Sympathy (Full Album)",
         "artist" : "Ministry",
         "picture": "ministrywithsympathy.png"
+    },
+    "Ministry - So So Life (Live Minneapolis_ July 20_ 1983)" :{
+        "title" : "So So Life (Live Minneapolis_ July 20_ 1983)",
+        "artist" : "Ministry",
+        "picture" : "ministrylive.jpeg"
     }
 }
