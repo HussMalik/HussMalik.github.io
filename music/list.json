@@ -406,5 +406,10 @@
         "title" : "Holding On",
         "artist" : "Soul II Soul",
         "picture" : "s2s.png"
+    },
+    "Phish - Waiting All Night" :{
+        "title" : "Waiting All Night",
+        "artist" : "Phish",
+        "picture" : "phishwaiting.jpg"
     }
 }
