@@ -387,5 +387,24 @@
         "title" : "So So Life (Live Minneapolis_ July 20_ 1983)",
         "artist" : "Ministry",
         "picture" : "ministrylive.jpeg"
+    },
+    "Ashra - Sunrain" :{
+        "title" : "Sunrain",
+        "artist" : "Ashra",
+        "picture" : "ashrasunrain.jpg"
+    },
+    "Ashra - Deep Distance" :{
+        "title" : "Deep Distance",
+        "artist" : "Ashra"
+    },
+    "Soul II Soul - Dance (1989)" :{
+        "title" : "Dance (1989)",
+        "artist" : "Soul II Soul",
+        "picture" : "soul2soulDance.png"
+    },
+    "Soul II Soul - Holding On" :{
+        "title" : "Holding On",
+        "artist" : "Soul II Soul",
+        "picture" : "s2s.png"
     }
 }
