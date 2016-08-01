@@ -421,5 +421,10 @@
         "title" : "Sweetness and Light",
         "artist" : "Lush",
         "picture" : "lushsweetness.jpg"
+    },
+    "Yes - Starship Trooper" :{
+        "title" : "Starship Trooper",
+        "artist" : "Yes",
+        "picture" : "yestrooper.png"
     }
 }
