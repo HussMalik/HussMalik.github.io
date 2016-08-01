@@ -426,5 +426,10 @@
         "title" : "Starship Trooper",
         "artist" : "Yes",
         "picture" : "yestrooper.png"
+    },
+    "Yes - Yours Is No Disgrace" :{
+        "title" : "Yours Is No Disgrace",
+        "artist" : "Yes",
+        "picture" : "yestrooper.png"
     }
 }
