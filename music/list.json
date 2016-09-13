@@ -84,10 +84,6 @@
         "title" : "The Dream Is Always The Same Soundtrack",
         "artist" : "Tangerine Dream"
     },
-    "Tangerine Dream -  Love On A Real Train" :{
-        "title" : "Love On A Real Train",
-        "artist" : "Tangerine Dream"
-    },
     "Ministry - Game Over" :{
         "title" : "Game Over",
         "artist" : "Ministry"
@@ -431,5 +427,9 @@
         "title" : "Yours Is No Disgrace",
         "artist" : "Yes",
         "picture" : "yestrooper.png"
+    },
+    "Tangerine Dream - Love on a real train (Risky Business)" :{
+        "title" : "Love on a real train (Risky Business)",
+        "artist" : "Tangerine Dream"
     }
 }
