@@ -36,7 +36,7 @@ $.attachDomObjects();
 //----| Attach non- DOM objects |----//
 $.toggleTime = 200; //number of milliseconds to toggle the buttons
 $.scrammbleThis = scrammbleThis; // mix returns a new array, a randomized version of its given array
-$.githubId = "SabbaKilam";
+$.githubId = "HussMalik";
 
 //====| Make the global data model object that holds the app's state variables |====//
 var model = {
