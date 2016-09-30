@@ -30,13 +30,14 @@
            <div id="app">
               
            <div id="songListHolder">
-                <center>
-                    <div>Choose a Song &nbsp;&nbsp;
-                        <span style="color: rgb(255,50,50 ); font-weight: bold; text-shadow: 0 1px 0 lightgray; cursor: pointer;">&cross;</span>
-                    </div></center>          
                 <select id="songSelector">
                     <option>Song Option</option>
                 </select>
+                <center>
+                    <div>&#8679;&nbsp;Choose a Song&nbsp;&#8679;&nbsp;&nbsp;
+                        <span style="color: rgb(255,50,50 ); font-weight: bold; text-shadow: 0 1px 0 lightgray; cursor: pointer;">&cross;</span>
+                    </div>
+                </center>
            </div>  
            
                <div id="bottomMusicInfo">
@@ -69,7 +70,7 @@
                     <div id="menuButton" class="button">&#9776;&#x022EE; </div>
                </div>
                <div id="controls3">
-                   <div id="muteButton" ><span id="muteButtonSpan">M</span></div>
+                   <div id="muteButton" class="button"><span id="muteButtonSpan">M</span></div>
                </div>
                    
                 <audio id="audioPlayer" 
@@ -79,6 +80,7 @@
                 </audio>               
           
                <!--<div id="message"></div-->
+               <div id="pictureFrame"></div>
            </div><!-- END of app-->
 
         </div>
