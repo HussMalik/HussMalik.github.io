@@ -29,8 +29,7 @@ $.hiddenSlider = //
 $.topic = //text that describes the page
 $.songListHolder = // div that holds selection list
 $.songSelector = // select element to be filled with song choices
-$.pictureFrame = //primary holder of song photo (splash2 is the secondsry holder)
-$.pictureSlider = //hidden range input element over pictureFrame used to slide picture
+$.pictureFrame = //primary holder of song photo (splash2 is the secondsry holder) 
 //$.etc =   // describe each DOM object to be accessed in this app project
 "domObjects";// dummy string variable
 $.attachDomObjects();
@@ -87,17 +86,8 @@ var model = {
     ,appTouched: false
     ,splash2Touched: false
     ,songSelectedManually: false
-    //----| picture sliding state variables |----//
-    ,pictureSliderTouched: false
-    ,delayNextTouchResponse: false
-    ,firstSliderValue: 50
-    ,lastSliderValue: 50
-    ,sliderTravelAmount: 0
-    ,sliderTimerId: 0
-    ,picWidth: $.pictureFrame.getBoundingClientRect().width
-    ,picLeft: 0
-    ,sliding: false
-    ,firstPress: true    
+    ,goodTimes: [256.25, 1348, 3315.5 ]
+    
 };
 //====================| END of Model |===================//
 
@@ -222,24 +212,18 @@ $(window).on("load", function(){
     $($.songSelector).on("change", function(){
         model.songSelectedManually = true;
     });
-    
+    /*
+    $($.app).on("mousedown", function(e){
+        if(e.target.id === "app"){
+            model.appTouched = true;
+          }
+    });
+    */
     $($.pictureFrame).on("mousedown", function(){
         model.appTouched = true;        
     });
-    
     $($.splash2).on("mousedown", function(){
         model.splash2Touched = true;
-    });
-    $($.pictureSlider).on("mousedown", function(){
-        if(model.delayNextTouchResponse)return;
-        model.delayNextTouchResponse = true;
-        setTimeout(function(){
-            model.delayNextTouchResponse = false;            
-        }, 750);
-        model.sliding = false;        
-    });
-    $($.pictureSlider).on("input", function(){
-        model.pictureSliderTouched = true;
     });
 
     //=====| UPDATE the view (GUI) with this polling timer |====//
@@ -286,16 +270,14 @@ $(window).on("load", function(){
             //make audio element track the playPause button
             adjustAudioPlayer();
             
-            //stuff for sliding picture
-            model.picWidth = $.pictureFrame.getBoundingClientRect().width;          
-            
             updateSlider();
             model.resized = false;
         }
         
         //maybe check for muted condition
         if(model.audioPlayer.muted || model.audioPlayer.volume === 0){
-            pressInMute();
+            pressInMute();          
+            //model.muted = true;            
         }
         else if(! model.audioPlayer.muted || model.audioPlayer.volume !== 0){
             releaseMute();          
@@ -377,10 +359,12 @@ $(window).on("load", function(){
                 model.audioPlayer.muted = true;
                 model.muted = true;
                 pressInMute();
+                //pressIn($.muteButton);
             }else{
                 model.audioPlayer.muted = false;
                 model.muted = false;
                 releaseMute();
+                //release($.muteButton);
             }
             model.muteButtonTouched = false;
         }
@@ -453,100 +437,20 @@ $(window).on("load", function(){
             model.songSelectedManually = false;
             
         }
-        /*
         if(model.appTouched){
             $($.splash2).styles("visibility: visible")("opacity: 1");
             model.appTouched = false;
         }
-        */
         if(model.splash2Touched){
             $($.splash2).styles("visibility: hidden")("opacity: 0");
             model.splash2Touched = false;
         }
+        if(true){}
+        if(true){}
         
-        /*********************************************
-        ==========| Picture Slider Handler |==========
-        **********************************************/
-        if(model.pictureSliderTouched){
-            if(model.firstPress){
-                model.firstSliderValue = 1* $.pictureSlider.value;
-                model.firstPress = false;
-            }
-            var entryValue = 1 * $.pictureSlider.value;
-            clearTimeout(model.sliderTimerId);
-            model.sliderTimerId = setTimeout(function(){
-                model.lastSliderValue = entryValue;
-                $.pictureSlider.value = 50;
-                $($.pictureFrame).styles("left: 0");
-                model.picLeft = 0;
-                model.sliding = false;
-                model.firstPress = true;
-                if(model.firstSliderValue === model.lastSliderValue){
-                  enlargePicture();
-                }
-            },500);
-            //---------------------//
-              model.sliderTravelAmount =  entryValue - model.firstSliderValue;
-              model.picLeft = parseInt(model.picWidth * model.sliderTravelAmount / 100, 10);
-              var goodSlideConditions = (model.firstSliderValue <= 40 &&  entryValue  >= model.firstSliderValue) ||
-                  (model.firstSliderValue >= 60 && entryValue <= model.firstSliderValue);
-              if(model.sliding){
-                if(goodSlideConditions){
-                  if(model.picLeft >= 0){
-                    $($.pictureFrame).styles("left: " + model.picLeft + "px");
-                    if(model.picLeft > $.pictureFrame.getBoundingClientRect().width/2){
-                        clearTimeout(model.sliderTimerId);
-                        model.firstPress = true; //crucial! to prevent fast forwarding.
-                        model.backButtonTouched = true;
-                        slideSlowlyFromLeft();
-                    }
-                  }else{
-                    $($.pictureFrame).styles("left: " +  2 * model.picLeft + "px");
-                    if( Math.abs(model.picLeft) > Math.abs($.pictureFrame.getBoundingClientRect().width)/2 ){
-                        clearTimeout(model.sliderTimerId);
-                        model.firstPress = true; //crucial! to prevent fast forwarding.
-                        model.nextButtonTouched = true;
-                        slideSlowlyFromRight();                        
-                    }  
-                  } 
-                }
-              }else{
-                model.sliding = true;    
-              }
-            //---------------------//
-            model.pictureSliderTouched = false;
-        }
-        if(true){}
-        if(true){}
         
         //etc.
         //====| helper functions |====//
-        function slideSlowlyFromLeft(){
-            $($.pictureFrame).styles("transition: left 0s ease");            
-            var left = -2 * $.pictureFrame.getBoundingClientRect().width;
-            $($.pictureFrame).styles
-                ("left: " + left + "px");
-            setTimeout(function(){
-                $($.pictureFrame).styles("transition: left 0.75s ease")("left: 0");
-                    setTimeout(function(){
-                    $($.pictureFrame).styles("transition: left 0s ease");
-                    }, 700);                
-            }, 10); 
-        }
-        function slideSlowlyFromRight(){
-            var left = $.pictureFrame.getBoundingClientRect().width;
-            $($.pictureFrame).styles
-                ("left: " + left + "px");
-            setTimeout(function(){
-                $($.pictureFrame).styles("transition: left 0.75s ease")("left: 0");
-                    setTimeout(function(){
-                    $($.pictureFrame).styles("transition: left 0s ease");
-                    }, 700);                
-            }, 10);
-        }
-        function enlargePicture(){
-            $($.splash2).styles("visibility: visible")("opacity: 1");            
-        }        
         function pressInMute(){
             $($.muteButtonSpan).styles
                 ("background: url("+ model.speakerMuteIconPath +") no-repeat top")
