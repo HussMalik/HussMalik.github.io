@@ -18,6 +18,20 @@ body{
     overflow: hidden;
     background-color: transparent;
 }
+#preloadedImages{
+    position: absolute;
+    visibility: hidden;
+}
+#newGithubId{
+    position: fixed;
+    bottom:0;
+    left:0;
+    margin: auto;
+    opacity: 0;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+}
 #songListHolder{
     position: absolute;
     width: 100%;
@@ -51,6 +65,8 @@ body{
     height: 100%;
     overflow-x: hidden;
     overflow-y: hidden; 
+    background: radial-gradient(#393939,black);
+
 }
 
 #app{
@@ -78,8 +94,9 @@ body{
     left: 0;
     right: 0;
     margin: auto;
-    cursor: pointer;
+    cursor: pointer;    
 }
+
 #pictureSlider{
     opacity: 0;
 }
@@ -164,7 +181,7 @@ audio{
     position: absolute;
     width: 100%;    
     top: 4.68rem;
-    z-index: 4;
+    z-index: 7;
 }
 
 .button{
@@ -222,7 +239,6 @@ audio{
     letter-spacing: -0.1rem;
     line-height: 200%;    
     z-index: 2;
-    //transition: color 1.5s ease;
     cursor: pointer;     
 }
 

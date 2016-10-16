@@ -1,5 +1,4 @@
 /*global $*/
-/*global CreateListMixer*/
 /*global scrammbleThis*/
 //====| Gather DOM elements, then make a global data model for the app |====//
 $.holder =  // outer div of the project
@@ -31,6 +30,7 @@ $.songListHolder = // div that holds selection list
 $.songSelector = // select element to be filled with song choices
 $.pictureFrame = //primary holder of song photo (splash2 is the secondsry holder)
 $.pictureSlider = //hidden range input element over pictureFrame used to slide picture
+$.newGithubId = //text input for another github user's music list
 //$.etc =   // describe each DOM object to be accessed in this app project
 "domObjects";// dummy string variable
 $.attachDomObjects();
@@ -44,7 +44,7 @@ $.githubId = "HussMalik";
 var model = {
     startingUp: true
     ,audioPlayer: $.audioPlayer
-    ,introAudioSource: "http://sabbakilam.github.io/gitmusicapp/silent.mp3" 
+    ,introAudioSource: "http://sabbakilam.github.io/gitmusicapp/silent.mp3"
     ,audioSource: ""
     ,picturePath: ""
     ,currentMusicPath: "https://" + $.githubId + ".github.io/music/list.json"
@@ -66,8 +66,8 @@ var model = {
     ,fractionRight: 1
     ,shuffleImages: []
     ,shuffleTimerId: 0
-    ,resized: false    
-    ,hiddenSliderTouched: false    
+    ,resized: false
+    ,hiddenSliderTouched: false
     ,backButtonTouched: false
     ,playPauseButtonTouched: false
     ,nextButtonTouched: false
@@ -97,7 +97,7 @@ var model = {
     ,picWidth: $.pictureFrame.getBoundingClientRect().width
     ,picLeft: 0
     ,sliding: false
-    ,firstPress: true    
+    ,firstPress: true
 };
 //====================| END of Model |===================//
 
@@ -106,16 +106,16 @@ $.initialize = function initialize(){
     for(let i=1; i<=4;i++){
         model.shuffleImages.push("shuffle"+i+".png");
     }
-    
+
     //fill dropdown list
     getMusicList(fillSelectOptions);
-    
+
     //swap and kill opening splash screens, then load first picture in spalsh 2.
-    $($.splash1).styles("visibility: visible")("opacity: 1"); 
+    $($.splash1).styles("visibility: visible")("opacity: 1");
     setTimeout(function(){
         // kill first splash screen and show next one (css eases in 2seconds)
         $($.splash1).styles("visibility: hidden")("opacity: 0");
-        $($.splash2).styles("visibility: visible")("opacity: 1");        
+        $($.splash2).styles("visibility: visible")("opacity: 1");
         setTimeout(function(){
             // kill second screen.
             $($.splash2).styles("visibility: hidden")("opacity: 0");
@@ -124,17 +124,17 @@ $.initialize = function initialize(){
             setTimeout(function(){
                 //okay now time to replace the spalsh screen2 image with current song's picture
                 $.splash2.style.background = "url(" + model.picturePath + ") no-repeat top";
-                $.splash2.style.backgroundSize = "cover";                
+                $.splash2.style.backgroundSize = "cover";
             },1000);
         },1500);
     },1500);
-    
+
     //put slider all the way to the left
     document.getElementById("hiddenSlider").value = 0;
-    
+
     $.adjustRem(1, 85); // $.adjustRem(1, 85) has worked well so far
     if(window.innerWidth >= model.maximumAppWidth){
-        model.windowWidth = model.maximumAppWidth;            
+        model.windowWidth = model.maximumAppWidth;
     }else{
         model.windowWidth = window.innerWidth;
     }
@@ -147,28 +147,32 @@ $.initialize = function initialize(){
 $(window).on("load", function(){
     $.initialize();
     updateSlider();
-    
+
     //place local audio player near the top to overlap our playPause button:
-    adjustAudioPlayer();    
-    
+    adjustAudioPlayer();
+
     //====| Register DOM events into the data model |====//
     // Note: handlers should only change model flags and model data, not the DOM.
     $(window).on("resize", function(){
+        ignoreNewGithubId();
         if(window.innerWidth >= model.maximumAppWidth){
-            model.windowWidth = model.maximumAppWidth;            
+            model.windowWidth = model.maximumAppWidth;
         }else{
             model.windowWidth = window.innerWidth;
         }
         model.windowHeight = window.innerHeight;
         model.resized = true;
     });
-    
+
     $(window).on("click", function(e){
+        if(e.target.id !== "newGithubId"){
+            ignoreNewGithubId();
+        }
         if(e.target.id === 'audioPlayer'){
             model.playPauseButtonTouched = true;
         }
     });
-    
+
     $($.backButton).on("mousedown", function(){
         model.backButtonTouched = true;
     });
@@ -186,7 +190,7 @@ $(window).on("load", function(){
     });
     $($.shuffleButton).on("mousedown", function(){
         model.shuffleButtonTouched = true;
-    });    
+    });
     $($.nonStopButton).on("mousedown", function(){
         model.nonStopButtonTouched = true;
     });
@@ -200,33 +204,33 @@ $(window).on("load", function(){
         //---------------------------//
         if(model.nonStop){
             if(model.currentSongIndex >= (model.currentSongsArray.length - 1) ){
-                model.currentSongIndex = 0;               
+                model.currentSongIndex = 0;
             }
             else{
                 model.currentSongIndex += 1;
             }
             $.songSelector.selectedIndex = model.currentSongIndex;
             cueNextSong(model.currentSongIndex);
-            model.audioPlayer.play();                
+            model.audioPlayer.play();
         }
         else{
-           model.backButtonTouched = true; 
+           model.backButtonTouched = true;
         }
-        //---------------------------//        
+        //---------------------------//
     };
     $($.songListHolder).on("mousedown", function(e){
         if(e.target.id !=="songSelector"){
-            model.songListHolderTouched = true;    
+            model.songListHolderTouched = true;
         }
     });
     $($.songSelector).on("change", function(){
         model.songSelectedManually = true;
     });
-    
+
     $($.pictureFrame).on("mousedown", function(){
-        model.appTouched = true;        
+        model.appTouched = true;
     });
-    
+
     $($.splash2).on("mousedown", function(){
         model.splash2Touched = true;
     });
@@ -234,16 +238,50 @@ $(window).on("load", function(){
         if(model.delayNextTouchResponse)return;
         model.delayNextTouchResponse = true;
         setTimeout(function(){
-            model.delayNextTouchResponse = false;            
+            model.delayNextTouchResponse = false;
         }, 750);
-        model.sliding = false;        
+        model.sliding = false;
     });
     $($.pictureSlider).on("input", function(){
         model.pictureSliderTouched = true;
     });
+    $($.newGithubId).on("mousedown", function(){
+        $($.newGithubId).styles("opacity: 1");
+    });
+    $($.newGithubId).on("keyup", function(e){
+        if(e.keyCode && e.keyCode === 13){
+            $.newGithubId.blur();
+            $($.newGithubId).styles("opacity: 0");
+
+                var possibleGithubId = $.newGithubId.value.trim();
+                $.newGithubId.value = "";
+                var possibleListUrl = "https://" + possibleGithubId + ".github.io/music/list.json";
+                var getList = new XMLHttpRequest();
+            try{
+                getList.open("GET", possibleListUrl);
+                getList.send();
+                getList.onload = function(){
+                    if(getList.status === 200 || getList.status === 0){
+                        if(getList.response.length !== 0){
+                            $.githubId = possibleGithubId;
+                            model.currentMusicPath = "https://" + $.githubId + ".github.io/music/list.json";
+                            model.baseUrl = "https://" + $.githubId + ".github.io/music/";
+                            getMusicList(fillSelectOptions);
+                        }
+                    }
+                    else{
+                        alert("Trouble getting new music list");
+                    }
+                };//END getList.onload
+            }catch(e){
+                alert(e);
+            }
+        }
+    });
+
 
     //=====| UPDATE the view (GUI) with this polling timer |====//
-    /* 
+    /*
         Note: The "real" handlers here in the View updater,
         which checks the model for changes, and updates the GUI accordingly
     */
@@ -252,26 +290,26 @@ $(window).on("load", function(){
         if(model.updatingView) return;
         model.updatingView = true;
         //-----------------------------//
-        
+
         showTimes();
-        updateSlider(); 
+        updateSlider();
         // don't attempt to display song duration until that info is available
-        if( ! model.durationDiscovered ){ 
+        if( ! model.durationDiscovered ){
             if( !isNaN(model.audioPlayer.duration) && model.audioPlayer.duration !== 0){
                 $.duration.innerHTML = $.secToMinSec(model.audioPlayer.duration);
                 model.durationDiscovered = true;
             }
         }
-        
+
         // show proper play/pause icon based on reported play or pause
         if(! model.audioPlayer.paused && ! model.audioPlayer.ended){
             pressIn($.playPauseButton);
-            $($.playPauseButton).html(model.pauseIcon);            
+            $($.playPauseButton).html(model.pauseIcon);
         }else{
             release($.playPauseButton);
-            $($.playPauseButton).html(model.playIcon);             
+            $($.playPauseButton).html(model.playIcon);
         }
-        
+
         //check for resizing
         if(model.resized){
             if(model.windowWidth >= model.maximumAppWidth){
@@ -281,39 +319,39 @@ $(window).on("load", function(){
             else{
                 $($.app).styles("width: 100%");
             }
-            $.adjustRem("", "", model.windowWidth); 
-            
+            $.adjustRem("", "", model.windowWidth);
+
             //make audio element track the playPause button
             adjustAudioPlayer();
-            
+
             //stuff for sliding picture
-            model.picWidth = $.pictureFrame.getBoundingClientRect().width;          
-            
+            model.picWidth = $.pictureFrame.getBoundingClientRect().width;
+
             updateSlider();
             model.resized = false;
         }
-        
+
         //maybe check for muted condition
         if(model.audioPlayer.muted || model.audioPlayer.volume === 0){
             pressInMute();
         }
         else if(! model.audioPlayer.muted || model.audioPlayer.volume !== 0){
-            releaseMute();          
-            //model.muted = false;          
+            releaseMute();
+            //model.muted = false;
         }
-        
+
         if(model.backButtonTouched){
-            togglePress($.backButton, $.toggleTime); // 75 milliseconds?            
+            togglePress($.backButton, $.toggleTime); // 75 milliseconds?
             if(model.audioPlayer.currentTime === 0){
                 if(model.currentSongIndex <= 0 ){
-                    model.currentSongIndex = model.currentSongsArray.length -1;               
+                    model.currentSongIndex = model.currentSongsArray.length -1;
                 }
                 else{
                     model.currentSongIndex -= 1;
                 }
                 model.audioPlayer.pause();
                 model.audioPlayer.load();
-                $.songSelector.selectedIndex = model.currentSongIndex;                 
+                $.songSelector.selectedIndex = model.currentSongIndex;
                 cueNextSong(model.currentSongIndex);
             }else{
                 model.audioPlayer.pause();
@@ -329,9 +367,9 @@ $(window).on("load", function(){
                     release($.playPauseButton);
                 }
             }
-            model.backButtonTouched = false;            
+            model.backButtonTouched = false;
         }
-        
+
         if(model.playPauseButtonTouched && model.audioPlayer.paused){// && ! model.playing){
             model.audioPlayer.play();
             pressIn($.playPauseButton);
@@ -342,7 +380,7 @@ $(window).on("load", function(){
             model.audioPlayer.pause();
             release($.playPauseButton);
             $($.playPauseButton).html(model.playIcon);
-            model.playPauseButtonTouched = false;            
+            model.playPauseButtonTouched = false;
         }
         if(model.menuButtonTouched){
             togglePress($.menuButton, $.toggleTime); // 100 milliseconds?
@@ -355,9 +393,9 @@ $(window).on("load", function(){
         // Here the slider drives the audio progress (elsewhere, the audio drives the slider)
         if(model.hiddenSliderTouched){
             //model.progress = $.hiddenSlider.value;
-            
+
             if(!isNaN(model.audioPlayer.duration) && model.audioPlayer.duration !== 0){
-                    model.progress = $.hiddenSlider.value;                
+                    model.progress = $.hiddenSlider.value;
                     model.fractionLeft = $.hiddenSlider.value / 1000 ;
                     model.fractionRight = 1 - model.fractionLeft;
                     model.audioPlayer.currentTime = model.fractionLeft * model.audioPlayer.duration;
@@ -394,7 +432,7 @@ $(window).on("load", function(){
             else{
                 model.audioPlayer.setAttribute("autoplay", "autoplay");
                 pressIn($.nonStopButton);
-                //$($.nonStopButton).html("streaming");                
+                //$($.nonStopButton).html("streaming");
                 model.nonStop = true;
             }
             model.nonStopButtonTouched = false;
@@ -406,8 +444,8 @@ $(window).on("load", function(){
                 toggleShuffleImages(false);
                 model.currentSongsArray = model.masterSongsArray;
                 fillSelectOptions(model.currentSongsArray, $.songSelector);
-                //$.songSelector.selectedIndex = model.currentSongsArray.indexOf($.audioPlayer.src); 
-                $.songSelector.selectedIndex = model.currentSongIndex;                
+                //$.songSelector.selectedIndex = model.currentSongsArray.indexOf($.audioPlayer.src);
+                $.songSelector.selectedIndex = model.currentSongIndex;
                 model.shuffling = false;
             }
             else{
@@ -428,14 +466,14 @@ $(window).on("load", function(){
         if(model.nextButtonTouched){
             togglePress($.nextButton, $.toggleTime); // 75 milliseconds?
             if(model.currentSongIndex >= (model.currentSongsArray.length - 1) ){
-                model.currentSongIndex = 0;               
+                model.currentSongIndex = 0;
             }
             else{
                 model.currentSongIndex += 1;
             }
             model.audioPlayer.pause();
             model.audioPlayer.load();
-            $.songSelector.selectedIndex = model.currentSongIndex;            
+            $.songSelector.selectedIndex = model.currentSongIndex;
             cueNextSong(model.currentSongIndex);
             model.nextButtonTouched = false;
         }
@@ -451,19 +489,14 @@ $(window).on("load", function(){
             model.audioPlayer.load();
             cueNextSong(model.currentSongIndex);
             model.songSelectedManually = false;
-            
+
         }
-        /*
-        if(model.appTouched){
-            $($.splash2).styles("visibility: visible")("opacity: 1");
-            model.appTouched = false;
-        }
-        */
+
         if(model.splash2Touched){
             $($.splash2).styles("visibility: hidden")("opacity: 0");
             model.splash2Touched = false;
         }
-        
+
         /*********************************************
         ==========| Picture Slider Handler |==========
         **********************************************/
@@ -479,22 +512,23 @@ $(window).on("load", function(){
                 $.pictureSlider.value = 50;
                 $($.pictureFrame).styles("left: 0");
                 model.picLeft = 0;
-                model.sliding = false;
                 model.firstPress = true;
+                model.sliding = false;
                 if(model.firstSliderValue === model.lastSliderValue){
                   enlargePicture();
                 }
+
             },500);
             //---------------------//
               model.sliderTravelAmount =  entryValue - model.firstSliderValue;
               model.picLeft = parseInt(model.picWidth * model.sliderTravelAmount / 100, 10);
-              var goodSlideConditions = (model.firstSliderValue <= 40 &&  entryValue  >= model.firstSliderValue) ||
-                  (model.firstSliderValue >= 60 && entryValue <= model.firstSliderValue);
+              var goodSlideConditions = (model.firstSliderValue <= 45 &&  entryValue  >= model.firstSliderValue) ||
+                  (model.firstSliderValue >= 55 && entryValue <= model.firstSliderValue);
               if(model.sliding){
                 if(goodSlideConditions){
                   if(model.picLeft >= 0){
                     $($.pictureFrame).styles("left: " + model.picLeft + "px");
-                    if(model.picLeft > $.pictureFrame.getBoundingClientRect().width/2){
+                    if(model.picLeft > 0.75 * $.pictureFrame.getBoundingClientRect().width){
                         clearTimeout(model.sliderTimerId);
                         model.firstPress = true; //crucial! to prevent fast forwarding.
                         model.backButtonTouched = true;
@@ -502,27 +536,27 @@ $(window).on("load", function(){
                     }
                   }else{
                     $($.pictureFrame).styles("left: " +  2 * model.picLeft + "px");
-                    if( Math.abs(model.picLeft) > Math.abs($.pictureFrame.getBoundingClientRect().width)/2 ){
+                    if( Math.abs(model.picLeft) > 0.75 * Math.abs($.pictureFrame.getBoundingClientRect().width) ){
                         clearTimeout(model.sliderTimerId);
                         model.firstPress = true; //crucial! to prevent fast forwarding.
                         model.nextButtonTouched = true;
-                        slideSlowlyFromRight();                        
-                    }  
-                  } 
+                        slideSlowlyFromRight();
+                    }
+                  }
                 }
               }else{
-                model.sliding = true;    
+                model.sliding = true;
               }
             //---------------------//
             model.pictureSliderTouched = false;
         }
         if(true){}
         if(true){}
-        
+
         //etc.
         //====| helper functions |====//
         function slideSlowlyFromLeft(){
-            $($.pictureFrame).styles("transition: left 0s ease");            
+            $($.pictureFrame).styles("transition: left 0s ease");
             var left = -2 * $.pictureFrame.getBoundingClientRect().width;
             $($.pictureFrame).styles
                 ("left: " + left + "px");
@@ -530,8 +564,8 @@ $(window).on("load", function(){
                 $($.pictureFrame).styles("transition: left 0.75s ease")("left: 0");
                     setTimeout(function(){
                     $($.pictureFrame).styles("transition: left 0s ease");
-                    }, 700);                
-            }, 10); 
+                    }, 700);
+            }, 10);
         }
         function slideSlowlyFromRight(){
             var left = $.pictureFrame.getBoundingClientRect().width;
@@ -541,16 +575,16 @@ $(window).on("load", function(){
                 $($.pictureFrame).styles("transition: left 0.75s ease")("left: 0");
                     setTimeout(function(){
                     $($.pictureFrame).styles("transition: left 0s ease");
-                    }, 700);                
+                    }, 700);
             }, 10);
         }
         function enlargePicture(){
-            $($.splash2).styles("visibility: visible")("opacity: 1");            
-        }        
+            $($.splash2).styles("visibility: visible")("opacity: 1");
+        }
         function pressInMute(){
             $($.muteButtonSpan).styles
                 ("background: url("+ model.speakerMuteIconPath +") no-repeat top")
-                ("background-size: 80% 75%")               
+                ("background-size: 80% 75%")
             ;
             $($.muteButton).styles
                 ("border: none")
@@ -564,7 +598,7 @@ $(window).on("load", function(){
             $.browserPrefix.forEach(prefix=>{
                 $($.muteButton).styles("background: " + prefix + "linear-gradient(#3a3a3a, #666)");
             });
-            
+
         }
         function releaseMute(){
             $($.muteButtonSpan).styles
@@ -573,7 +607,7 @@ $(window).on("load", function(){
             ;
             $($.muteButton).styles
                 ("border: none")
-                ("box-shadow: none")                    
+                ("box-shadow: none")
                 ("border-top: 1px solid #aaa")
                 ("border-left: 1px solid #666")
                 ("box-shadow: 1px 1px 2px black")
@@ -594,7 +628,7 @@ $(window).on("load", function(){
                 model.progress = newProgress;
                 $.hiddenSlider.value = newProgress;
                 updateSlider();
-            }            
+            }
         }
         function togglePress(domObject, moment){
             pressIn(domObject);
@@ -614,12 +648,12 @@ $(window).on("load", function(){
             ;
             $.browserPrefix.forEach(prefix=>{
                 $(domObject).styles("background: " + prefix + "linear-gradient(#3a3a3a, #666)");
-            });            
+            });
         }
         function release(domObject){
             $(domObject).styles
                 ("border: none")
-                ("box-shadow: none")                    
+                ("box-shadow: none")
                 ("border-top: 1px solid #aaa")
                 ("border-left: 1px solid #666")
                 ("box-shadow: 1px 1px 2px black")
@@ -630,7 +664,7 @@ $(window).on("load", function(){
                 $(domObject).styles("background: " + prefix + "linear-gradient(#666, #3a3a3a)");
             });
         }
-        //----------------------------------//        
+        //----------------------------------//
         model.updatingView = false;
     }
         function updateSlider(){
@@ -644,12 +678,12 @@ $(window).on("load", function(){
             $($.sliderHolder).styles("width: " + width + "px");
         }
         function showTimes(){
-            $($.currentTime).html($.secToMinSec(model.audioPlayer.currentTime));        
+            $($.currentTime).html($.secToMinSec(model.audioPlayer.currentTime));
             $($.duration).html($.secToMinSec(model.audioPlayer.duration));
         }
 });
 //====| app "ends" here |====//
-function getMusicList(callback){
+function getMusicList(fillSelectOptions){
     var listGetter = new XMLHttpRequest();
     listGetter.open("GET", model.currentMusicPath);
     listGetter.send();
@@ -666,10 +700,10 @@ function getMusicList(callback){
             model.currentSongsArray = model.masterSongsArray;
             //start with random song
             model.currentSongIndex = Math.floor( model.currentSongsArray.length * Math.random() );
- 
+
             cueNextSong(model.currentSongIndex);
-            if(typeof callback === "function"){
-                callback(model.currentSongsArray, $.songSelector);
+            if(typeof fillSelectOptions === "function"){
+                fillSelectOptions(model.currentSongsArray, $.songSelector);
             }
         }
         else{
@@ -702,11 +736,11 @@ function cueNextSong(index){
         model.picturePath = model.baseUrl + "pictures/" + pictureFile;
         $.pictureFrame.style.background = "url(" + model.picturePath + ") no-repeat top";
         $.pictureFrame.style.backgroundSize = "contain";
-        
+
         if(!model.startingUp){
             //place picture in splash screen #2 to be brought forward if required (by user request)
             $.splash2.style.background = "url(" + model.picturePath + ") no-repeat top";
-            $.splash2.style.backgroundSize = "cover";              
+            $.splash2.style.backgroundSize = "cover";
         }
     }
     else{
@@ -714,11 +748,11 @@ function cueNextSong(index){
         model.picturePath = pictureFile;
         $.pictureFrame.style.background = "url(" + model.picturePath + ") no-repeat top";
         $.pictureFrame.style.backgroundSize = "contain";
-        
+
         if(!model.startingUp){
             //place picture in splash screen #2 to be brought forward if required (by user request)
             $.splash2.style.background = "url(" + model.picturePath + ") no-repeat top";
-            $.splash2.style.backgroundSize = "cover";               
+            $.splash2.style.backgroundSize = "cover";
         }
     }
     var artist = model.musicListObject[model.currentSongsArray[index]].artist;
@@ -735,13 +769,13 @@ function show(element){
    $(element).styles
         ("opacity: 1")
         ("visibility: visible")
-    ;    
+    ;
 }
 function hide(element){
     $(element).styles
         ("opacity: 0")
         ("visibility: hidden")
-    ; 
+    ;
 }
 function fillSelectOptions(array, selectionTarget){
     if(Object.prototype.toString.call(array) === "[object Array]"){
@@ -751,15 +785,23 @@ function fillSelectOptions(array, selectionTarget){
             var text = document.createTextNode(song);
             option.appendChild(text);
             selectionTarget.appendChild(option);
-            //selectionTarget.selectedIndex = model.currentSongsArray.indexOf(model.audioPlayer.src);                
-            selectionTarget.selectedIndex = model.currentSongIndex;            
+            //selectionTarget.selectedIndex = model.currentSongsArray.indexOf(model.audioPlayer.src);
+            selectionTarget.selectedIndex = model.currentSongIndex;
         });
     }
 }
 function adjustAudioPlayer(){
    //make native (& hidden) audio element track the playPause button
    var btnPlaceAndSize = document.getElementById("playPauseButton").getBoundingClientRect();
-   //$($.audioPlayer).styles("top: " + (btnPlaceAndSize.height/2)  + "px");
-   $($.audioPlayer).styles("top: " + (btnPlaceAndSize.height/0.65)  + "px");
-   
+   //$($.audioPlayer).styles("top: " + (btnPlaceAndSize.height/0.65)  + "px");
+   $($.audioPlayer).styles("top: 4.1rem");
 }
+function ignoreNewGithubId(){
+  //$.newGithubId.blur();
+  $($.newGithubId).styles("opacity: 0");
+}
+
+
+
+
+
