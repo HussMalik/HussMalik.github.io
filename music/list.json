@@ -436,5 +436,10 @@
         "title" : "Sands",
         "artist" : "Lanterna",
         "picture" : "lanternasands.jpg"
+    },
+    "Lanterna - B minor" :{
+        "title" : "B minor",
+        "artist" : "Lanterna",
+        "picture" : "lanternaBminor.jpg"
     }
 }
