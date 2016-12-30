@@ -16,7 +16,7 @@ $artist = $_SERVER['HTTP_ARTIST'];
 $title = $_SERVER['HTTP_TITLE'];
 
 $webroot  = $_SERVER['DOCUMENT_ROOT'] . '/';
-$musicFolder = $webroot . "music/";
+$musicFolder = $webroot . "hussmalik.github.io/music/";
 
 //====| Save mp3 file to music folder |====
 

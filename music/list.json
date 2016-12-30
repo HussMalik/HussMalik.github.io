@@ -431,5 +431,10 @@
     "Tangerine Dream - Love on a real train (Risky Business)" :{
         "title" : "Love on a real train (Risky Business)",
         "artist" : "Tangerine Dream"
+    },
+    "Lanterna - Sands" :{
+        "title" : "Sands",
+        "artist" : "Lanterna",
+        "picture" : "lanternasands.jpg"
     }
 }
