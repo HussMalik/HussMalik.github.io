@@ -115,8 +115,7 @@ body{
     z-index: 7;
     opacity: 0;
     visibility: hidden;
-    box-shadow: 0.5rem 0.5rem 1rem black; 
-    padding-right: 2rem;    
+    box-shadow: 0.5rem 0.5rem 1rem black;    
 }
 #splash1{
     background-color: rgb(51, 43, 51);
@@ -135,7 +134,6 @@ body{
     opacity: 0;
     cursor: pointer;
     z-index: 10;
-    padding-right: 2rem;
 }
 
 #controls{
