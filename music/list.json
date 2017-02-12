@@ -451,5 +451,10 @@
             "title" : "Rejuvenation",
             "artist" : "Lonnie Liston Smith",
             "picture" : "lonnierejuv.jpg"
-    }    
+    },
+    "Pat Metheny Group - San Lorenzo" :{
+        "title" : "San Lorenzo",
+        "artist" : "Pat Metheny Group",
+        "picture" : "methenylorenzo.jpg"
+    }
 }
