@@ -456,5 +456,15 @@
         "title" : "San Lorenzo",
         "artist" : "Pat Metheny Group",
         "picture" : "methenylorenzo.jpg"
+    },
+    "Pat Metheny Group - Phase Dance" :{
+        "title" : "Phase Dance",
+        "artist" : "Pat Metheny Group",
+        "picture" : "methenylorenzo.jpg"
+    },
+    "Pat Metheny Group - April Wind_April Joy" :{
+        "title" : "April Wind / April Joy",
+        "artist" : "Pat Metheny Group",
+        "picture" : "methenylorenzo.jpg"
     }
 }
